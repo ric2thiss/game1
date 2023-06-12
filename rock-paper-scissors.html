@@ -9,6 +9,9 @@
 </head>
 <body>
     <h1 class="container text-center mt-5 fw-bold">Rock Paper Scissors Game</h1>
+    <div class="container text-center my-5">
+        <div id="scoress"></div>
+    </div>
     <div class="container d-flex align-items-center justify-content-center my-5">
         <button class="btn btn-primary mx-2 btn-lg" onclick="StartGame('rock')">Rock</button>
         <button class="btn btn-primary mx-2 btn-lg"onclick="StartGame('paper')">Paper</button>
@@ -36,7 +39,20 @@
     <!-- Logic -->
     <script>
         // Global Variables
+        let scores = {
+            wins: 0,
+            losses: 0,
+            tie: 0,
+            savingScore(){
+                scoreDOM.innerHTML = `<p>Wins: ${scores.wins} - Losses: ${scores.losses} - Tie: ${scores.tie}</p>`
+            },
+            icon(){
+                player.src = 'rock-1.png'
+                computer.src = 'rock-2.png';
+            }
+        }
         let computerMove;
+        const scoreDOM = document.getElementById('scoress');
         let player = document.getElementById('player');
         let computer = document.getElementById('computer');
         let winnermessage = document.getElementById('winnermessage');
@@ -81,30 +97,48 @@
             if(computerMove === e){
                 setTimeout(() => {
                     winnermessage.innerHTML = `You picked ${e}. Computer picked ${computerMove} <br> <h3 class="text-warning my-3">It's a TIE!</h3>`;
+                    scores.tie+=1;
                     modal.showModal();
                     closeButton.addEventListener('click', () => {
                         modal.close();
+                        scores.icon()
+                        scores.savingScore();
                     })
                 }, 1500);
             }else if(computerMove === 'rock' && e === 'scissors' || computerMove === 'scissors' && e === 'paper' || computerMove === 'paper'&& e === 'rock'){
                 setTimeout(() => {
                     winnermessage.innerHTML = `You picked ${e}. Computer picked ${computerMove} <br> <h3 class="text-danger my-3">You Lose!</h3>`;
+                    scores.losses+=1;
                     modal.showModal();
                     closeButton.addEventListener('click', () => {
                         modal.close();
+                        scores.icon()
+                        scores.savingScore();
                     })
                 }, 1500);
             }else if(e === 'rock' && computerMove === 'scissors' || e === 'paper' && computerMove === 'rock' || e === 'scissors' && computerMove === 'paper'){
                 setTimeout(() => {
                     winnermessage.innerHTML = `You picked ${e}. Computer picked ${computerMove} <br> <h3 class="text-primary my-3">You Win!</h3>`;
+                    scores.wins+=1;
                     modal.showModal();
                     closeButton.addEventListener('click', () => {
                         modal.close();
+                        scores.icon();
+                        scores.savingScore();
                     })
                 }, 1500);
-            }
+            }   
             
         }
+
+        // function savingScore(){
+        //     scoreDOM.innerHTML = `<p>Wins: ${scores.wins} - Losses: ${scores.losses} - Tie: ${scores.tie}</p>`
+        // }
+
+        // function icon(){
+        //     player.src = 'rock-1.png'
+        //     computer.src = 'rock-2.png';
+        // }
 
 
   
